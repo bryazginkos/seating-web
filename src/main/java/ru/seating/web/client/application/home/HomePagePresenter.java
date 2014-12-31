@@ -24,6 +24,6 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     HomePagePresenter(EventBus eventBus,
                       MyView view,
                       MyProxy proxy) {
-        super(eventBus, view, proxy, ApplicationPresenter.SLOT_SetMainContent);
+        super(eventBus, view, proxy, ApplicationPresenter.MAIN_SLOT);
     }
 }

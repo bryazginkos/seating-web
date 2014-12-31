@@ -16,7 +16,13 @@ public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView,
     }
 
     @ContentSlot
-    public static final Type<RevealContentHandler<?>> SLOT_SetMainContent = new Type<>();
+    public static final Type<RevealContentHandler<?>> TOP_MENU_SLOT = new Type<>();
+
+    @ContentSlot
+    public static final Type<RevealContentHandler<?>> MAIN_SLOT = new Type<>();
+
+    @ContentSlot
+    public static final Type<RevealContentHandler<?>> BOTTOM_SLOT = new Type<>();
 
     @ProxyStandard
     public interface MyProxy extends Proxy<ApplicationPresenter> {

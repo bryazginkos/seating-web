@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -14,7 +15,13 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
     }
 
     @UiField
-    SimplePanel main;
+    HTMLPanel topPanel;
+
+    @UiField
+    HTMLPanel mainPanel;
+
+    @UiField
+    HTMLPanel bottomPanel;
 
     @Inject
     ApplicationView(Binder uiBinder) {
@@ -23,10 +30,19 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
 
     @Override
     public void setInSlot(Object slot, IsWidget content) {
-        if (slot == ApplicationPresenter.SLOT_SetMainContent) {
-            main.setWidget(content);
+        if (slot == ApplicationPresenter.TOP_MENU_SLOT) {
+            topPanel.clear();
+            topPanel.add(content);
+        } else if (slot == ApplicationPresenter.MAIN_SLOT) {
+            mainPanel.clear();
+            mainPanel.add(content);
+        } else if (slot == ApplicationPresenter.BOTTOM_SLOT) {
+            bottomPanel.clear();
+            bottomPanel.add(content);
         } else {
             super.setInSlot(slot, content);
         }
     }
+
+
 }
