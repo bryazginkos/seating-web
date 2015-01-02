@@ -6,7 +6,7 @@
         <g:Anchor ui:field="aboutLink" text="About"/>
         <g:Anchor ui:field="contactsLink" text="Contacts"/>
         <br/>
-        <g:HTMLPanel ui:field="mainPanel"/>
+        Here service description will be
         <br/>
         <g:Button ui:field="startButton" text="START"/>
     </g:HTMLPanel>
