@@ -1,0 +1,16 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <g:HTMLPanel>Welocome to seating service!
+        Top menu:
+        <g:Button ui:field="addGroupButton" text="Add Group"/>
+        <g:Button ui:field="addGuestButton" text="Add Guest"/>
+        <br/>
+        Here text about step
+        <g:HTMLPanel ui:field="groupsPanel"/>
+        STEP 1
+        <br/>
+        <g:HTMLPanel ui:field="personsPanel"/>
+        <br/>
+        <g:Button ui:field="continueButton" text="Continue"/>
+    </g:HTMLPanel>
+</ui:UiBinder>

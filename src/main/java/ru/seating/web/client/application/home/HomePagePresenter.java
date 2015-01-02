@@ -1,9 +1,12 @@
 package ru.seating.web.client.application.home;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.application.home.about.AboutPresenter;
 import ru.seating.web.client.application.home.contacts.ContactsPresenter;
@@ -17,8 +20,9 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 
 public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomePagePresenter.MyProxy> {
     public interface MyView extends View {
-        void addAboutClickHandler(ClickHandler handler);
-        void addContactsClickHandler(ClickHandler handler);
+        void addAboutClickHandler(@Nonnull ClickHandler handler);
+        void addContactsClickHandler(@Nonnull ClickHandler handler);
+        void addStartHandler(@Nonnull ClickHandler handler);
     }
 
     @Inject
@@ -26,6 +30,9 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
 
     @Inject
     ContactsPresenter contactsPresenter;
+
+    @Inject
+    PlaceManager placeManager;
 
     @ProxyStandard
     @NameToken(NameTokens.home)
@@ -43,6 +50,7 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     private void addHandlers() {
         addAboutHandler();
         addContactsHandler();
+        addStartHandler();
     }
 
     private void addAboutHandler() {
@@ -61,5 +69,19 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
                 addToPopupSlot(contactsPresenter);
             }
         });
+    }
+
+    private void addStartHandler() {
+        getView().addStartHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                goToFirstStep();
+            }
+        });
+    }
+
+    private void goToFirstStep() {
+        PlaceRequest placeRequest = new PlaceRequest(NameTokens.persons);
+        placeManager.revealPlace(placeRequest);
     }
 }

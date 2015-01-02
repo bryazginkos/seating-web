@@ -1,7 +1,9 @@
 package ru.seating.web.client.application.home;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
+import com.google.common.base.Preconditions;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -26,12 +28,21 @@ public class HomePageView extends ViewImpl implements HomePagePresenter.MyView {
     }
 
     @Override
-    public void addAboutClickHandler(ClickHandler handler) {
+    public void addAboutClickHandler(@Nonnull ClickHandler handler) {
+        Preconditions.checkNotNull(handler);
         aboutLink.addClickHandler(handler);
     }
 
     @Override
-    public void addContactsClickHandler(ClickHandler handler) {
+    public void addContactsClickHandler(@Nonnull ClickHandler handler) {
+        Preconditions.checkNotNull(handler);
         contactsLink.addClickHandler(handler);
+    }
+
+    @Override
+    public void addStartHandler(@Nonnull ClickHandler handler) {
+        Preconditions.checkNotNull(handler);
+        startButton.addClickHandler(handler);
+        startLink.addClickHandler(handler);
     }
 }
