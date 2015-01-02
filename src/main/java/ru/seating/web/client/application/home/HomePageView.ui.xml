@@ -2,9 +2,9 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <g:HTMLPanel>Welocome to seating service!
         Top menu:
-        <g:Hyperlink ui:field="startLink" text="Start planning"/>
-        <g:Hyperlink ui:field="aboutLink" text="About"/>
-        <g:Hyperlink ui:field="contactsLink" text="Contacts"/>
+        <g:Anchor ui:field="startLink" text="Start planning"/>
+        <g:Anchor ui:field="aboutLink" text="About"/>
+        <g:Anchor ui:field="contactsLink" text="Contacts"/>
         <br/>
         <g:HTMLPanel ui:field="mainPanel"/>
         <br/>
