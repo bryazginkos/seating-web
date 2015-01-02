@@ -1,4 +1,13 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel>Hello World! </g:HTMLPanel>
+    <g:HTMLPanel>Welocome to seating service!
+        Top menu:
+        <g:Hyperlink ui:field="startLink" text="Start planning"/>
+        <g:Hyperlink ui:field="aboutLink" text="About"/>
+        <g:Hyperlink ui:field="contactsLink" text="Contacts"/>
+        <br/>
+        <g:HTMLPanel ui:field="mainPanel"/>
+        <br/>
+        <g:Button ui:field="startButton" text="START"/>
+    </g:HTMLPanel>
 </ui:UiBinder>
