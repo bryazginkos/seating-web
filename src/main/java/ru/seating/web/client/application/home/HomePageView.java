@@ -29,4 +29,9 @@ public class HomePageView extends ViewImpl implements HomePagePresenter.MyView {
     public void addAboutClickHandler(ClickHandler handler) {
         aboutLink.addClickHandler(handler);
     }
+
+    @Override
+    public void addContactsClickHandler(ClickHandler handler) {
+        contactsLink.addClickHandler(handler);
+    }
 }
