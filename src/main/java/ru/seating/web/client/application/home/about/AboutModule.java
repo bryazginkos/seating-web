@@ -1,4 +1,4 @@
-package ru.seating.web.client.application.about;
+package ru.seating.web.client.application.home.about;
 
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 

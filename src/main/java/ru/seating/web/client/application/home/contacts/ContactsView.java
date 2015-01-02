@@ -1,5 +1,5 @@
 
-package ru.seating.web.client.application.contacts;
+package ru.seating.web.client.application.home.contacts;
 
 import com.google.common.base.Preconditions;
 import com.google.gwt.event.dom.client.ClickHandler;
