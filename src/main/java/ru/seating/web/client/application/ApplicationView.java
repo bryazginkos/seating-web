@@ -25,8 +25,10 @@ public class ApplicationView extends ViewImpl implements ApplicationPresenter.My
     @Override
     public void setInSlot(Object slot, IsWidget content) {
         if (slot == ApplicationPresenter.MAIN_SLOT) {
-            mainPanel.clear();
-            mainPanel.add(content);
+            if (content != null) {
+                mainPanel.clear();
+                mainPanel.add(content);
+            }
         } else {
             super.setInSlot(slot, content);
         }
