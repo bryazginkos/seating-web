@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.place.NameTokens;
 
@@ -35,6 +36,11 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
                          MyProxy proxy) {
         super(eventBus, view, proxy, ApplicationPresenter.MAIN_SLOT);
         addHandlers();
+    }
+
+    @Override
+    protected void revealInParent() {
+        RevealContentEvent.fire(this, ApplicationPresenter.MAIN_SLOT, this);
     }
 
     private void addHandlers() {

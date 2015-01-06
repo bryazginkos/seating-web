@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.application.home.about.AboutPresenter;
@@ -45,6 +46,11 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
                       MyProxy proxy) {
         super(eventBus, view, proxy, ApplicationPresenter.MAIN_SLOT);
         addHandlers();
+    }
+
+    @Override
+    protected void revealInParent() {
+        RevealContentEvent.fire(this, ApplicationPresenter.MAIN_SLOT, this);
     }
 
     private void addHandlers() {
