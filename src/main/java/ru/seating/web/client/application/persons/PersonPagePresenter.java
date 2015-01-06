@@ -6,7 +6,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.place.NameTokens;
@@ -22,7 +22,7 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @ProxyStandard
     @NameToken(NameTokens.persons)
-    public interface MyProxy extends Proxy<PersonPagePresenter> {
+    public interface MyProxy extends ProxyPlace<PersonPagePresenter> {
     }
 
     @Inject
