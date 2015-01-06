@@ -1,6 +1,7 @@
 package ru.seating.web.client.gin;
 
 import ru.seating.web.client.application.ApplicationModule;
+import ru.seating.web.client.error.ErrorModule;
 import ru.seating.web.client.place.NameTokens;
 import com.gwtplatform.mvp.client.annotations.DefaultPlace;
 import com.gwtplatform.mvp.client.annotations.ErrorPlace;
@@ -17,10 +18,11 @@ public class ClientModule extends AbstractPresenterModule {
     protected void configure() {
         install(new DefaultModule());
         install(new ApplicationModule());
+        install(new ErrorModule());
 
         // DefaultPlaceManager Places
         bindConstant().annotatedWith(DefaultPlace.class).to(NameTokens.home);
-        bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.home);
-        bindConstant().annotatedWith(UnauthorizedPlace.class).to(NameTokens.home);
+        bindConstant().annotatedWith(ErrorPlace.class).to(NameTokens.error);
+        bindConstant().annotatedWith(UnauthorizedPlace.class).to(NameTokens.error);
     }
 }
