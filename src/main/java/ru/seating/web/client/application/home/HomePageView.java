@@ -1,19 +1,16 @@
 package ru.seating.web.client.application.home;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
-
-import com.google.common.base.Preconditions;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
-import com.gwtplatform.mvp.client.ViewImpl;
+import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
-public class HomePageView extends ViewImpl implements HomePagePresenter.MyView {
+public class HomePageView extends ViewWithUiHandlers<HomeUIHandlers> implements HomePagePresenter.MyView {
     public interface Binder extends UiBinder<Widget, HomePageView> {
     }
 
@@ -27,22 +24,32 @@ public class HomePageView extends ViewImpl implements HomePagePresenter.MyView {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
-    public void addAboutClickHandler(@Nonnull ClickHandler handler) {
-        Preconditions.checkNotNull(handler);
-        aboutLink.addClickHandler(handler);
+    @UiHandler("startButton")
+    public void onStartClick(ClickEvent event) {
+        if (getUiHandlers() != null) {
+            getUiHandlers().onStartClick();
+        }
     }
 
-    @Override
-    public void addContactsClickHandler(@Nonnull ClickHandler handler) {
-        Preconditions.checkNotNull(handler);
-        contactsLink.addClickHandler(handler);
+    @UiHandler("startLink")
+    public void onStartLinkClick(ClickEvent event) {
+        if (getUiHandlers() != null) {
+            getUiHandlers().onStartClick();
+        }
     }
 
-    @Override
-    public void addStartHandler(@Nonnull ClickHandler handler) {
-        Preconditions.checkNotNull(handler);
-        startButton.addClickHandler(handler);
-        startLink.addClickHandler(handler);
+    @UiHandler("contactsLink")
+    public void onContactsClick(ClickEvent event) {
+        if (getUiHandlers() != null) {
+            getUiHandlers().onContactsClick();
+        }
     }
+
+    @UiHandler("aboutLink")
+    public void onAboutClick(ClickEvent event) {
+        if (getUiHandlers() != null) {
+            getUiHandlers().onAboutClick();
+        }
+    }
+
 }
