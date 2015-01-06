@@ -28,7 +28,6 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     @Inject
     ContactsPresenter contactsPresenter;
 
-    @Inject
     PlaceManager placeManager;
 
     @ProxyStandard
@@ -39,8 +38,10 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
     @Inject
     HomePagePresenter(EventBus eventBus,
                       MyView view,
-                      MyProxy proxy) {
+                      MyProxy proxy,
+                      PlaceManager placeManager) {
         super(eventBus, view, proxy, ApplicationPresenter.MAIN_SLOT);
+        this.placeManager = placeManager;
         getView().setUiHandlers(this);
     }
 
@@ -52,8 +53,10 @@ public class HomePagePresenter extends Presenter<HomePagePresenter.MyView, HomeP
 
     @Override
     public void onStartClick() {
-        PlaceRequest placeRequest = new PlaceRequest(NameTokens.persons);
-        placeManager.revealPlace(placeRequest);
+        PlaceRequest request = new PlaceRequest.Builder()
+                .nameToken(NameTokens.persons)
+                .build();
+        placeManager.revealPlace(request);
     }
 
     @Override
