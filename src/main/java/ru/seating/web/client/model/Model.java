@@ -17,6 +17,18 @@ public class Model {
         persons.remove(person);
     }
 
+    public void deleteGroup(@Nonnull Group group) {
+        Preconditions.checkNotNull(group);
+        groupSet.remove(group);
+        if (persons != null) {
+            for (Person person : persons) {
+                if (person.getGroupSet() != null) {
+                    person.getGroupSet().remove(group);
+                }
+            }
+        }
+    }
+
     public Set<Person> getPersons() {
         return persons;
     }

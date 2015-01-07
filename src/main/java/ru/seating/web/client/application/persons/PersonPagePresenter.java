@@ -16,13 +16,16 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import ru.seating.web.client.application.ApplicationPresenter;
+import ru.seating.web.client.application.persons.group.GroupPresenter;
 import ru.seating.web.client.application.persons.person.PersonPresenter;
+import ru.seating.web.client.model.Group;
 import ru.seating.web.client.model.Model;
 import ru.seating.web.client.model.ModelManager;
 import ru.seating.web.client.model.Person;
 import ru.seating.web.client.place.NameTokens;
 import ru.seating.web.client.utils.ServiceCallback;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 /**
@@ -41,8 +44,19 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
         }
     };
 
+    private final DeleteGroupEvent.DeleteGroupHandler deleteGroupHandler = new DeleteGroupEvent.DeleteGroupHandler() {
+        @Override
+        public void onDeleteGroup(DeleteGroupEvent deleteGroupEvent) {
+            ModelManager.getModel().deleteGroup(deleteGroupEvent.getGroup());
+            configureByModel();
+        }
+    };
+
     @ContentSlot
     public static final GwtEvent.Type<RevealContentHandler<?>> PERSONS_SLOT = new GwtEvent.Type<>();
+
+    @ContentSlot
+    public static final GwtEvent.Type<RevealContentHandler<?>> GROUPS_SLOT = new GwtEvent.Type<>();
 
     @ProxyStandard
     @NameToken(NameTokens.persons)
@@ -51,13 +65,17 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     private IndirectProvider<PersonPresenter> personPresenterFactory;
 
+    private IndirectProvider<GroupPresenter> groupPresenterFactory;
+
     @Inject
     PersonPagePresenter(EventBus eventBus,
                          MyView view,
                          MyProxy proxy,
-                         Provider<PersonPresenter> personPresenterFactory) {
+                         Provider<PersonPresenter> personPresenterFactory,
+                         Provider<GroupPresenter> groupPresenterFactory) {
         super(eventBus, view, proxy, ApplicationPresenter.MAIN_SLOT);
         this.personPresenterFactory = new StandardProvider<PersonPresenter>(personPresenterFactory);
+        this.groupPresenterFactory = new StandardProvider<GroupPresenter>(groupPresenterFactory);
         getView().setUiHandlers(this);
     }
 
@@ -84,6 +102,11 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     private void configureByModel() {
         Model model = ModelManager.getModel();
+        configurePersons(model);
+        configureGroups(model);
+    }
+
+    private void configurePersons(@Nonnull Model model) {
         setInSlot(PERSONS_SLOT, null);
         if (model.getPersons() != null) {
             for (final Person person : model.getPersons()) {
@@ -98,10 +121,27 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
         }
     }
 
+    private void configureGroups(@Nonnull Model model) {
+        setInSlot(GROUPS_SLOT, null);
+        if (model.getGroupSet() != null) {
+            for (final Group group : model.getGroupSet()) {
+                groupPresenterFactory.get(new ServiceCallback<GroupPresenter>() {
+                    @Override
+                    public void onSuccess(GroupPresenter groupPresenter) {
+                        addToSlot(GROUPS_SLOT, groupPresenter);
+                        groupPresenter.showGroup(group);
+                    }
+                });
+            }
+        }
+
+    }
+
     @Override
     protected void onBind() {
         super.onBind();
         getEventBus().addHandler(DeletePersonEvent.getType(), deletePersonHandler);
+        getEventBus().addHandler(DeleteGroupEvent.getType(), deleteGroupHandler);
     }
 
     @Override

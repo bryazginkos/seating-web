@@ -55,8 +55,13 @@ public class PersonPageView extends ViewWithUiHandlers<PersonPageUIHandlers> imp
             if (content != null) {
                 personsPanel.add(content);
             }
+        } else if (slot == PersonPagePresenter.GROUPS_SLOT) {
+            if (content != null) {
+                groupsPanel.add(content);
+            }
         } else {
             super.addToSlot(slot, content);
+
         }
     }
 
@@ -67,7 +72,13 @@ public class PersonPageView extends ViewWithUiHandlers<PersonPageUIHandlers> imp
             if (content != null) {
                 personsPanel.add(content);
             }
-        } else {
+        } else if (slot == PersonPagePresenter.GROUPS_SLOT) {
+            groupsPanel.clear();
+            if (content != null) {
+                groupsPanel.add(content);
+            }
+        }
+        else {
             super.setInSlot(slot, content);
         }
     }
