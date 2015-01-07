@@ -1,7 +1,9 @@
 package ru.seating.web.client.application.persons;
 
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import org.jukito.JukitoRunner;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +49,9 @@ public class PersonsPagePresenterTest {
     @Inject
     PersonPagePresenter personPagePresenter;
 
+    @Inject
+    EventBus eventBus;
+
     @Before
     public void prepareModel() {
         Model model = ModelManager.getModel();
@@ -78,8 +83,23 @@ public class PersonsPagePresenterTest {
     }
 
     @Test
-    public void testDeletePerson(PersonPresenter personPresenter) {
+    public void testDeletePerson() {
+        eventBus.fireEvent(new DeletePersonEvent(PERSON_1));
+        Model actualModel = ModelManager.getModel();
+        Model expectedModel = createModelWithoutPerson1();
+        Assert.assertEquals(expectedModel, actualModel);
+    }
 
-
+    private Model createModelWithoutPerson1() {
+        Model model = ModelManager.getModel();
+        model.setGroupSet(new HashSet<Group>(){{
+            add(BLUE_GROUP);
+            add(YELLOW_GROUP);
+        }});
+        model.setPersons(new HashSet<Person>(){{
+            add(PERSON_2);
+            add(PERSON_3);
+        }});
+        return model;
     }
 }
