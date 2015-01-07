@@ -6,6 +6,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
@@ -46,5 +47,28 @@ public class PersonPageView extends ViewWithUiHandlers<PersonPageUIHandlers> imp
     @UiHandler("continueButton")
     public void onContinueClick(ClickEvent clickEvent) {
         getUiHandlers().onContinueClick();
+    }
+
+    @Override
+    public void addToSlot(Object slot, IsWidget content) {
+        if (slot == PersonPagePresenter.PERSONS_SLOT) {
+            if (content != null) {
+                personsPanel.add(content);
+            }
+        } else {
+            super.addToSlot(slot, content);
+        }
+    }
+
+    @Override
+    public void setInSlot(Object slot, IsWidget content) {
+        if (slot == PersonPagePresenter.PERSONS_SLOT) {
+            personsPanel.clear();
+            if (content != null) {
+                personsPanel.add(content);
+            }
+        } else {
+            super.setInSlot(slot, content);
+        }
     }
 }

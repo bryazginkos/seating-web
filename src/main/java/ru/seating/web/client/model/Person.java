@@ -1,6 +1,7 @@
 package ru.seating.web.client.model;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by Константин on 07.01.2015.
@@ -9,6 +10,8 @@ public class Person {
     private String name;
 
     private HashMap<Person, Integer> relations;
+
+    private Set<Group> groupSet;
 
     private boolean isSingle;
 
@@ -34,5 +37,17 @@ public class Person {
 
     public void setSingle(boolean isSingle) {
         this.isSingle = isSingle;
+    }
+
+    /**
+     * Set of groups which this person is belong to
+     * @return
+     */
+    public Set<Group> getGroupSet() {
+        return groupSet;
+    }
+
+    public void setGroupSet(Set<Group> groupSet) {
+        this.groupSet = groupSet;
     }
 }
