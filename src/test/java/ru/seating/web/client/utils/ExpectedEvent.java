@@ -56,7 +56,7 @@ public class ExpectedEvent implements TestRule {
         @Override
         public void evaluate() throws Throwable {
             next.evaluate();
-            if (expectedEvent != null && wasEvent == false) {
+            if (expectedEvent != null && !wasEvent) {
                 fail("Expected event wasn't fired");
             }
         }

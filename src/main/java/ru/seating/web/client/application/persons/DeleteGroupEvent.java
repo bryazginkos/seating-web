@@ -1,9 +1,12 @@
 package ru.seating.web.client.application.persons;
 
+import com.google.common.base.Preconditions;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import ru.seating.web.client.model.Group;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by Константин on 07.01.2015.
@@ -18,7 +21,8 @@ public class DeleteGroupEvent extends GwtEvent<DeleteGroupEvent.DeleteGroupHandl
 
     private Group group;
 
-    public DeleteGroupEvent(Group group) {
+    public DeleteGroupEvent(@Nonnull Group group) {
+        Preconditions.checkNotNull(group);
         this.group = group;
     }
 
@@ -42,5 +46,22 @@ public class DeleteGroupEvent extends GwtEvent<DeleteGroupEvent.DeleteGroupHandl
 
     public Group getGroup() {
         return group;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof DeleteGroupEvent)) return false;
+
+        DeleteGroupEvent that = (DeleteGroupEvent) o;
+
+        if (!group.equals(that.group)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return group.hashCode();
     }
 }
