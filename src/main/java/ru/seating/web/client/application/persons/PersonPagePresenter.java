@@ -32,25 +32,9 @@ import javax.inject.Inject;
  * Created by Константин on 02.01.2015.
  */
 public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, PersonPagePresenter.MyProxy>
-        implements PersonPageUIHandlers {
+        implements PersonPageUIHandlers, DeletePersonEvent.DeletePersonHandler, DeleteGroupEvent.DeleteGroupHandler {
     public interface MyView extends View, HasUiHandlers<PersonPageUIHandlers> {
     }
-
-    private final DeletePersonEvent.DeletePersonHandler deletePersonHandler = new DeletePersonEvent.DeletePersonHandler() {
-        @Override
-        public void onDeletePerson(DeletePersonEvent deletePersonEvent) {
-            ModelManager.getModel().deletePerson(deletePersonEvent.getPerson());
-            configureByModel();
-        }
-    };
-
-    private final DeleteGroupEvent.DeleteGroupHandler deleteGroupHandler = new DeleteGroupEvent.DeleteGroupHandler() {
-        @Override
-        public void onDeleteGroup(DeleteGroupEvent deleteGroupEvent) {
-            ModelManager.getModel().deleteGroup(deleteGroupEvent.getGroup());
-            configureByModel();
-        }
-    };
 
     @ContentSlot
     public static final GwtEvent.Type<RevealContentHandler<?>> PERSONS_SLOT = new GwtEvent.Type<>();
@@ -99,6 +83,17 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
         //todo
     }
 
+    @Override
+    public void onDeletePerson(DeletePersonEvent deletePersonEvent) {
+        ModelManager.getModel().deletePerson(deletePersonEvent.getPerson());
+        configureByModel();
+    }
+
+    @Override
+    public void onDeleteGroup(DeleteGroupEvent deleteGroupEvent) {
+        ModelManager.getModel().deleteGroup(deleteGroupEvent.getGroup());
+        configureByModel();
+    }
 
     private void configureByModel() {
         Model model = ModelManager.getModel();
@@ -140,8 +135,8 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
     @Override
     protected void onBind() {
         super.onBind();
-        getEventBus().addHandler(DeletePersonEvent.getType(), deletePersonHandler);
-        getEventBus().addHandler(DeleteGroupEvent.getType(), deleteGroupHandler);
+        getEventBus().addHandler(DeletePersonEvent.getType(), this);
+        getEventBus().addHandler(DeleteGroupEvent.getType(), this);
     }
 
     @Override
