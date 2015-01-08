@@ -1,13 +1,15 @@
 package ru.seating.web.client.model;
 
-import com.google.common.base.Preconditions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.seating.web.client.exception.BusinessException;
+import ru.seating.web.client.utils.ReadOnlySet;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static org.junit.Assert.*;
 
 public class ModelTest {
 
@@ -21,46 +23,22 @@ public class ModelTest {
     private Person PERSON_3;
 
     @Before
-    public void prepare() {
-        preparePersons();
-        prepareModel();
-    }
-
-    private void prepareModel() {
+    public void prepare() throws BusinessException {
         ModelManager.clear();
         Model model = ModelManager.getModel();
-        model.getGroups().addAll(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
-        model.getPersons().addAll(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
-    }
+        model.addGroups(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
 
-    private void preparePersons() {
-        PERSON_1 = new Person() {{
-            this.setGroupSet(new HashSet<Group>() {{
-                add(BLUE_GROUP);
-            }});
-            this.setSingle(true);
-            this.setName("Person #1");
-        }};
+        PERSON_1 = new Person("Person #1", true);
+        PERSON_2 = new Person("Person #2", true);
+        PERSON_3 = new Person("Person #3", false);
+        model.addPersons(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
 
-        PERSON_2 = new Person() {{
-            this.setGroupSet(new HashSet<Group>() {{
-                add(BLUE_GROUP);
-                add(YELLOW_GROUP);
-            }});
-            this.setSingle(true);
-            this.setName("Person #2");
-        }};
-
-        PERSON_3 = new Person() {{
-            this.setGroupSet(new HashSet<Group>() {{
-            }});
-            this.setSingle(false);
-            this.setName("Person #3");
-        }};
+        PERSON_1.addGroup(BLUE_GROUP);
+        PERSON_2.addGroups(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
     }
 
     @Test
-    public void testDeletePerson() {
+    public void testDeletePerson() throws BusinessException {
         ModelManager.getModel().deletePerson(PERSON_1);
         Model actualModel = ModelManager.getModel();
         Model expectedModel = createModelWithoutPerson1();
@@ -69,7 +47,7 @@ public class ModelTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testDeletePersonWhenNoSuchPerson() {
-        ModelManager.getModel().deletePerson(new Person());
+        ModelManager.getModel().deletePerson(new Person("Peter", false));
     }
 
     @Test(expected = NullPointerException.class)
@@ -78,11 +56,21 @@ public class ModelTest {
     }
 
     @Test
-    public void testDeleteGroup() {
+    public void testDeleteGroup() throws BusinessException {
         ModelManager.getModel().deleteGroup(BLUE_GROUP);
         Model actualModel = ModelManager.getModel();
-        Model expectedModel = createModelWithoutBlueGroup();
-        Assert.assertEquals(expectedModel, actualModel);
+
+        HashSet<Group> expectedGroups = new HashSet<>(Arrays.asList(YELLOW_GROUP));
+        assertEquals(new ReadOnlySet<>(expectedGroups), actualModel.getGroups());
+
+        HashSet<Person> expectedPersons = new HashSet<>(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
+        assertEquals(new ReadOnlySet<>(expectedPersons), actualModel.getPersons());
+
+        assertTrue(PERSON_1.getGroupSet().isEmpty());
+        assertTrue(PERSON_3.getGroupSet().isEmpty());
+
+        HashSet<Group> expectedPerson2Groups = new HashSet<>(Arrays.asList(YELLOW_GROUP));
+        assertEquals(new ReadOnlySet<>(expectedPerson2Groups), PERSON_2.getGroupSet());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -95,27 +83,10 @@ public class ModelTest {
         ModelManager.getModel().deleteGroup(null);
     }
 
-    private Model createModelWithoutPerson1() {
-        Model model = ModelManager.getModel();
-        model.getGroups().addAll(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
-        model.getPersons().addAll(Arrays.asList(PERSON_2, PERSON_3));
+    private Model createModelWithoutPerson1() throws BusinessException {
+        Model model = new Model();
+        model.addGroups(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
+        model.addPersons(Arrays.asList(PERSON_2, PERSON_3));
         return model;
-    }
-
-    private Model createModelWithoutBlueGroup() {
-        deleteGroupFromPerson(BLUE_GROUP, PERSON_1);
-        deleteGroupFromPerson(BLUE_GROUP, PERSON_2);
-        Model model = ModelManager.getModel();
-        model.getGroups().add(YELLOW_GROUP);
-        model.getPersons().addAll(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
-        return model;
-    }
-
-    private void deleteGroupFromPerson(@Nonnull Group group, @Nonnull Person person) {
-        Preconditions.checkNotNull(person);
-        Preconditions.checkNotNull(group);
-        if (person.getGroupSet() != null) {
-            person.getGroupSet().remove(group);
-        }
     }
 }

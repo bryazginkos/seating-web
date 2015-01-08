@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import ru.seating.web.client.model.Group;
 import ru.seating.web.client.model.Person;
+import ru.seating.web.client.utils.ReadOnlySet;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -46,7 +47,7 @@ class PersonView extends ViewWithUiHandlers<PersonUiHandlers> implements PersonP
         configureGroupImages(person.getGroupSet());
     }
 
-    private void configureGroupImages(@Nonnull Set<Group> groupSet) {
+    private void configureGroupImages(@Nonnull ReadOnlySet<Group> groupSet) {
         Preconditions.checkNotNull(groupSet);
         groupImages.clear();
         for (Group group : groupSet) {
