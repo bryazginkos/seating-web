@@ -1,5 +1,6 @@
 package ru.seating.web.client.application.persons;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import org.jukito.JukitoRunner;
@@ -12,6 +13,7 @@ import ru.seating.web.client.application.persons.group.GroupPresenter;
 import ru.seating.web.client.application.persons.person.PersonPresenter;
 import ru.seating.web.client.model.*;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 
 import static org.mockito.Mockito.*;
@@ -22,29 +24,11 @@ public class PersonsPagePresenterTest {
     private static final Group BLUE_GROUP = new Group("Blue group", GroupColor.BLUE);
     private static final Group YELLOW_GROUP = new Group("Yellow group", GroupColor.YELLOW);
 
-    private static final Person PERSON_1 = new Person() {{
-        this.setGroupSet(new HashSet<Group>() {{
-            add(BLUE_GROUP);
-        }});
-        this.setSingle(true);
-        this.setName("Person #1");
-    }};
+    private Person PERSON_1;
 
-    private static final Person PERSON_2 = new Person() {{
-        this.setGroupSet(new HashSet<Group>() {{
-            add(BLUE_GROUP);
-            add(YELLOW_GROUP);
-        }});
-        this.setSingle(true);
-        this.setName("Person #2");
-    }};
+    private Person PERSON_2;
 
-    private static final Person PERSON_3 = new Person() {{
-        this.setGroupSet(new HashSet<Group>() {{
-        }});
-        this.setSingle(false);
-        this.setName("Person #3");
-    }};
+    private Person PERSON_3;
 
     @Inject
     PersonPagePresenter personPagePresenter;
@@ -53,7 +37,13 @@ public class PersonsPagePresenterTest {
     EventBus eventBus;
 
     @Before
-    public void prepareModel() {
+    public void prepare() {
+        preparePersons();
+        prepareModel();
+    }
+
+    private void prepareModel() {
+        ModelManager.clear();
         Model model = ModelManager.getModel();
         model.setGroupSet(new HashSet<Group>(){{
             add(BLUE_GROUP);
@@ -64,6 +54,32 @@ public class PersonsPagePresenterTest {
             add(PERSON_2);
             add(PERSON_3);
         }});
+    }
+
+    private void preparePersons() {
+        PERSON_1 = new Person() {{
+            this.setGroupSet(new HashSet<Group>() {{
+                add(BLUE_GROUP);
+            }});
+            this.setSingle(true);
+            this.setName("Person #1");
+        }};
+
+        PERSON_2 = new Person() {{
+            this.setGroupSet(new HashSet<Group>() {{
+                add(BLUE_GROUP);
+                add(YELLOW_GROUP);
+            }});
+            this.setSingle(true);
+            this.setName("Person #2");
+        }};
+
+        PERSON_3 = new Person() {{
+            this.setGroupSet(new HashSet<Group>() {{
+            }});
+            this.setSingle(false);
+            this.setName("Person #3");
+        }};
     }
 
     @Test
@@ -90,6 +106,14 @@ public class PersonsPagePresenterTest {
         Assert.assertEquals(expectedModel, actualModel);
     }
 
+    @Test
+    public void testDeleteGroup() {
+        eventBus.fireEvent(new DeleteGroupEvent(BLUE_GROUP));
+        Model actualModel = ModelManager.getModel();
+        Model expectedModel = createModelWithoutBlueGroup();
+        Assert.assertEquals(expectedModel, actualModel);
+    }
+
     private Model createModelWithoutPerson1() {
         Model model = ModelManager.getModel();
         model.setGroupSet(new HashSet<Group>(){{
@@ -101,5 +125,28 @@ public class PersonsPagePresenterTest {
             add(PERSON_3);
         }});
         return model;
+    }
+
+    private Model createModelWithoutBlueGroup() {
+        deleteGroupFromPerson(BLUE_GROUP, PERSON_1);
+        deleteGroupFromPerson(BLUE_GROUP, PERSON_2);
+        Model model = ModelManager.getModel();
+        model.setGroupSet(new HashSet<Group>(){{
+            add(YELLOW_GROUP);
+        }});
+        model.setPersons(new HashSet<Person>(){{
+            add(PERSON_1);
+            add(PERSON_2);
+            add(PERSON_3);
+        }});
+        return model;
+    }
+
+    private void deleteGroupFromPerson(@Nonnull Group group, @Nonnull Person person) {
+        Preconditions.checkNotNull(person);
+        Preconditions.checkNotNull(group);
+        if (person.getGroupSet() != null) {
+            person.getGroupSet().remove(group);
+        }
     }
 }
