@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import ru.seating.web.client.application.persons.DeletePersonEvent;
+import ru.seating.web.client.application.persons.editperson.EditPersonPresenter;
 import ru.seating.web.client.model.Person;
 
 import javax.annotation.Nonnull;
@@ -20,6 +21,9 @@ public class PersonPresenter extends PresenterWidget<PersonPresenter.MyView> imp
     private Person person;
 
     private EventBus eventBus;
+
+    @Inject
+    private EditPersonPresenter editPersonPresenter;
 
     @Inject
     PersonPresenter(EventBus eventBus, MyView view) {
@@ -36,7 +40,8 @@ public class PersonPresenter extends PresenterWidget<PersonPresenter.MyView> imp
 
     @Override
     public void openEditWindow() {
-
+        editPersonPresenter.initForEdit(person);
+        addToPopupSlot(editPersonPresenter);
     }
 
     public void showPerson(@Nonnull Person person) {

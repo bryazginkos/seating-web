@@ -16,6 +16,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.application.messagebox.MessageBoxPresenter;
+import ru.seating.web.client.application.persons.editperson.EditPersonPresenter;
 import ru.seating.web.client.application.persons.group.GroupPresenter;
 import ru.seating.web.client.application.persons.person.PersonPresenter;
 import ru.seating.web.client.exception.BusinessException;
@@ -33,7 +34,7 @@ import javax.inject.Inject;
  * Created by Константин on 02.01.2015.
  */
 public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, PersonPagePresenter.MyProxy>
-        implements PersonPageUIHandlers, DeletePersonEvent.DeletePersonHandler, DeleteGroupEvent.DeleteGroupHandler {
+        implements PersonPageUIHandlers, DeletePersonEvent.DeletePersonHandler, DeleteGroupEvent.DeleteGroupHandler, EditPersonEvent.EditPersonHandler {
     public interface MyView extends View, HasUiHandlers<PersonPageUIHandlers> {
     }
 
@@ -54,6 +55,9 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @Inject
     private MessageBoxPresenter messageBoxPresenter;
+
+    @Inject
+    private EditPersonPresenter editPersonPresenter;
 
     @Inject
     PersonPagePresenter(EventBus eventBus,
@@ -79,7 +83,8 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @Override
     public void onAddPersonClick() {
-        //todo
+        editPersonPresenter.initForCreating();
+        addToPopupSlot(editPersonPresenter);
     }
 
     @Override
@@ -96,6 +101,11 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
             messageBoxPresenter.configure("Error while deleting person. Probably the person was deleted before.");
             addToPopupSlot(messageBoxPresenter);
         }
+        configureByModel();
+    }
+
+    @Override
+    public void onEditPerson(EditPersonEvent EditPersonEvent) {
         configureByModel();
     }
 
