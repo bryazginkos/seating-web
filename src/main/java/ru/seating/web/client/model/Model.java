@@ -21,23 +21,23 @@ public class Model {
         groups = new HashSet<>();
     }
 
-    public void deletePerson(@Nonnull Person person) {
+    public void deletePerson(@Nonnull Person person) throws BusinessException {
         Preconditions.checkNotNull(person);
         if (!persons.remove(person)) {
-            throw new IllegalArgumentException("Person " + person.getName() + " is not found");
+            throw new BusinessException("Person " + person.getName() + " is not found");
         }
     }
 
-    public void deleteGroup(@Nonnull Group group) {
+    public void deleteGroup(@Nonnull Group group) throws BusinessException {
         Preconditions.checkNotNull(group);
         if (!groups.remove(group)) {
-            throw new IllegalArgumentException("Group " + group.getTitle() + " is not found");
+            throw new BusinessException("Group " + group.getTitle() + " is not found");
         }
         if (persons != null) {
             for (Person person : persons) {
                 try {
                     person.removeGroup(group);
-                } catch (IllegalArgumentException ignore) {
+                } catch (BusinessException ignore) {
 
                 }
             }
@@ -47,11 +47,11 @@ public class Model {
     public void addGroup(@Nonnull Group group) throws BusinessException {
         Preconditions.checkNotNull(group);
         if (groups.contains(group)) {
-            throw new IllegalArgumentException("Group " + group.getTitle() + " already exists");
+            throw new BusinessException("Group " + group.getTitle() + " already exists");
         }
         for (Group existGroup : groups) {
             if (existGroup.getColor() == group.getColor()) {
-                throw new IllegalArgumentException("Group with color " + group.getColor() + " already exists");
+                throw new BusinessException("Group with color " + group.getColor() + " already exists");
             }
             if (existGroup.getTitle().equals(group.getTitle())) {
                 throw new BusinessException("Group with title " + group.getTitle() + " already exists");
@@ -70,7 +70,7 @@ public class Model {
     public void addPerson(@Nonnull Person person) throws BusinessException {
         Preconditions.checkNotNull(person);
         if (persons.contains(person)) {
-            throw new IllegalArgumentException("Person " + person.getName() + " already exists");
+            throw new BusinessException("Person " + person.getName() + " already exists");
         }
         for (Person existPerson : persons) {
             if (existPerson.getName().equals(person.getName())) {
@@ -79,11 +79,11 @@ public class Model {
         }
         for (Group personGroup : person.getGroupSet()) {
             if (!groups.contains(personGroup)) {
-                throw new IllegalArgumentException("Person " + person.getName() + " belongs to unknown group " + personGroup.getTitle());
+                throw new BusinessException("Person " + person.getName() + " belongs to unknown group " + personGroup.getTitle());
             }
         }
         if (!person.getRelations().isEmpty()) {
-            throw new IllegalArgumentException("Person " + person.getName() + " has relations on adding to model step");
+            throw new BusinessException("Person " + person.getName() + " has relations on adding to model step");
         }
         persons.add(person);
     }

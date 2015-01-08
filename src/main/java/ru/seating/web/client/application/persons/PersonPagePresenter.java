@@ -15,8 +15,10 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import ru.seating.web.client.application.ApplicationPresenter;
+import ru.seating.web.client.application.messagebox.MessageBoxPresenter;
 import ru.seating.web.client.application.persons.group.GroupPresenter;
 import ru.seating.web.client.application.persons.person.PersonPresenter;
+import ru.seating.web.client.exception.BusinessException;
 import ru.seating.web.client.model.Group;
 import ru.seating.web.client.model.Model;
 import ru.seating.web.client.model.ModelManager;
@@ -49,6 +51,9 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
     private IndirectProvider<PersonPresenter> personPresenterFactory;
 
     private IndirectProvider<GroupPresenter> groupPresenterFactory;
+
+    @Inject
+    private MessageBoxPresenter messageBoxPresenter;
 
     @Inject
     PersonPagePresenter(EventBus eventBus,
@@ -84,13 +89,25 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @Override
     public void onDeletePerson(DeletePersonEvent deletePersonEvent) {
-        ModelManager.getModel().deletePerson(deletePersonEvent.getPerson());
+        try {
+            ModelManager.getModel().deletePerson(deletePersonEvent.getPerson());
+        } catch (BusinessException e) {
+            //todo move text to one place
+            messageBoxPresenter.configure("Error while deleting person. Probably the person was deleted before.");
+            addToPopupSlot(messageBoxPresenter);
+        }
         configureByModel();
     }
 
     @Override
     public void onDeleteGroup(DeleteGroupEvent deleteGroupEvent) {
-        ModelManager.getModel().deleteGroup(deleteGroupEvent.getGroup());
+        try {
+            ModelManager.getModel().deleteGroup(deleteGroupEvent.getGroup());
+        } catch (BusinessException e) {
+            //todo move text to one place
+            messageBoxPresenter.configure("Error while deleting group. Probably the group was deleted before.");
+            addToPopupSlot(messageBoxPresenter);
+        }
         configureByModel();
     }
 

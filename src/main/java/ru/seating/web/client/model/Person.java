@@ -1,6 +1,7 @@
 package ru.seating.web.client.model;
 
 import com.google.common.base.Preconditions;
+import ru.seating.web.client.exception.BusinessException;
 import ru.seating.web.client.utils.ReadOnlySet;
 
 import javax.annotation.Nonnull;
@@ -62,33 +63,33 @@ public class Person {
         return new ReadOnlySet<>(groupSet);
     }
 
-    public void removeGroup(@Nonnull Group group) {
+    public void removeGroup(@Nonnull Group group) throws BusinessException {
         Preconditions.checkNotNull(group);
         if (!groupSet.contains(group)) {
-            throw new IllegalArgumentException("Can't delete unknown group " + group.getTitle() + " from person " + name);
+            throw new BusinessException("Can't delete unknown group " + group.getTitle() + " from person " + name);
         }
         groupSet.remove(group);
     }
 
-    public void addGroup(@Nonnull Group group) {
+    public void addGroup(@Nonnull Group group) throws BusinessException {
         Preconditions.checkNotNull(group);
         if (!ModelManager.getModel().getGroups().contains(group)) {
-            throw new IllegalArgumentException("Cannot add unknown group " + group.getTitle() + " to person " + name);
+            throw new BusinessException("Cannot add unknown group " + group.getTitle() + " to person " + name);
         }
         if (groupSet.contains(group)) {
-            throw new IllegalArgumentException("Person " + name + " already belongs to group " + group.getTitle());
+            throw new BusinessException("Person " + name + " already belongs to group " + group.getTitle());
         }
         groupSet.add(group);
     }
 
-    public void addGroups(@Nonnull Collection<Group> groups) {
+    public void addGroups(@Nonnull Collection<Group> groups) throws BusinessException {
         Preconditions.checkNotNull(groups);
         for (Group group : groups) {
             addGroup(group);
         }
     }
 
-    public void replaceGroups(@Nonnull Collection<Group> groups) {
+    public void replaceGroups(@Nonnull Collection<Group> groups) throws BusinessException {
         Preconditions.checkNotNull(groups);
         groupSet.clear();
         addGroups(groups);

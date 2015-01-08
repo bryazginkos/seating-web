@@ -77,13 +77,13 @@ public class PersonsPagePresenterTest {
     }
 
     @Test
-    public void testDeletePerson() {
+    public void testDeletePerson() throws BusinessException {
         personPagePresenter.onDeletePerson(new DeletePersonEvent(PERSON_1));
         verify(model).deletePerson(PERSON_1);
     }
 
     @Test
-    public void testDeleteGroup() {
+    public void testDeleteGroup() throws BusinessException {
         personPagePresenter.onDeleteGroup(new DeleteGroupEvent(BLUE_GROUP));
         verify(model).deleteGroup(BLUE_GROUP);
     }

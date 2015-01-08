@@ -45,13 +45,13 @@ public class ModelTest {
         Assert.assertEquals(expectedModel, actualModel);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testDeletePersonWhenNoSuchPerson() {
+    @Test(expected = BusinessException.class)
+    public void testDeletePersonWhenNoSuchPerson() throws BusinessException {
         ModelManager.getModel().deletePerson(new Person("Peter", false));
     }
 
     @Test(expected = NullPointerException.class)
-    public void testDeleteNullPerson() {
+    public void testDeleteNullPerson() throws BusinessException {
         ModelManager.getModel().deletePerson(null);
     }
 
@@ -73,13 +73,13 @@ public class ModelTest {
         assertEquals(new ReadOnlySet<>(expectedPerson2Groups), PERSON_2.getGroupSet());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testDeleteGroupWhenNoSuchGroup() {
+    @Test(expected = BusinessException.class)
+    public void testDeleteGroupWhenNoSuchGroup() throws BusinessException {
         ModelManager.getModel().deleteGroup(new Group("red group", GroupColor.RED));
     }
 
     @Test(expected = NullPointerException.class)
-    public void testDeleteNullGroup() {
+    public void testDeleteNullGroup() throws BusinessException {
         ModelManager.getModel().deleteGroup(null);
     }
 
