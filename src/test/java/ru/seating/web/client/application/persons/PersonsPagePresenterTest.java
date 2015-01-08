@@ -50,7 +50,7 @@ public class PersonsPagePresenterTest {
     @Before
     public void prepare() {
         Model model = mock(Model.class);
-        when(model.getGroupSet()).thenReturn(new HashSet<Group>() {{
+        when(model.getGroups()).thenReturn(new HashSet<Group>() {{
             add(BLUE_GROUP);
             add(YELLOW_GROUP);
         }});

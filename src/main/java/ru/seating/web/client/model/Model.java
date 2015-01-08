@@ -3,6 +3,7 @@ package ru.seating.web.client.model;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -10,16 +11,25 @@ import java.util.Set;
  */
 public class Model {
     private Set<Person> persons;
-    private Set<Group> groupSet;
+    private Set<Group> groups;
 
-    public void deletePerson(@Nonnull Person person) {
-        Preconditions.checkNotNull(person);
-        persons.remove(person);
+    public Model() {
+        persons = new HashSet<>();
+        groups = new HashSet<>();
     }
 
-    public void deleteGroup(@Nonnull Group group) {
+    public void deletePerson(@Nonnull Person person) throws IllegalArgumentException {
+        Preconditions.checkNotNull(person);
+        if (!persons.remove(person)) {
+            throw new IllegalArgumentException("Person " + person.getName() + " is not found");
+        }
+    }
+
+    public void deleteGroup(@Nonnull Group group) throws IllegalArgumentException {
         Preconditions.checkNotNull(group);
-        groupSet.remove(group);
+        if (!groups.remove(group)) {
+            throw new IllegalArgumentException("Group " + group.getTitle() + " is not found");
+        }
         if (persons != null) {
             for (Person person : persons) {
                 if (person.getGroupSet() != null) {
@@ -33,15 +43,8 @@ public class Model {
         return persons;
     }
 
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
+    public Set<Group> getGroups() {
+        return groups;
     }
 
-    public Set<Group> getGroupSet() {
-        return groupSet;
-    }
-
-    public void setGroupSet(Set<Group> groupSet) {
-        this.groupSet = groupSet;
-    }
 }

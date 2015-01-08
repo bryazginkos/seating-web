@@ -1,7 +1,6 @@
 package ru.seating.web.client.application.persons;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.common.client.IndirectProvider;
@@ -118,8 +117,8 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     private void configureGroups(@Nonnull Model model) {
         setInSlot(GROUPS_SLOT, null);
-        if (model.getGroupSet() != null) {
-            for (final Group group : model.getGroupSet()) {
+        if (model.getGroups() != null) {
+            for (final Group group : model.getGroups()) {
                 groupPresenterFactory.get(new ServiceCallback<GroupPresenter>() {
                     @Override
                     public void onSuccess(GroupPresenter groupPresenter) {

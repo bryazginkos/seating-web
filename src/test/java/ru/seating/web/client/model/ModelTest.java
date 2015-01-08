@@ -4,10 +4,9 @@ import com.google.common.base.Preconditions;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.seating.web.client.application.persons.DeleteGroupEvent;
-import ru.seating.web.client.application.persons.DeletePersonEvent;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class ModelTest {
@@ -30,15 +29,8 @@ public class ModelTest {
     private void prepareModel() {
         ModelManager.clear();
         Model model = ModelManager.getModel();
-        model.setGroupSet(new HashSet<Group>(){{
-            add(BLUE_GROUP);
-            add(YELLOW_GROUP);
-        }});
-        model.setPersons(new HashSet<Person>(){{
-            add(PERSON_1);
-            add(PERSON_2);
-            add(PERSON_3);
-        }});
+        model.getGroups().addAll(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
+        model.getPersons().addAll(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
     }
 
     private void preparePersons() {
@@ -75,6 +67,16 @@ public class ModelTest {
         Assert.assertEquals(expectedModel, actualModel);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeletePersonWhenNoSuchPerson() {
+        ModelManager.getModel().deletePerson(new Person());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDeleteNullPerson() {
+        ModelManager.getModel().deletePerson(null);
+    }
+
     @Test
     public void testDeleteGroup() {
         ModelManager.getModel().deleteGroup(BLUE_GROUP);
@@ -83,16 +85,20 @@ public class ModelTest {
         Assert.assertEquals(expectedModel, actualModel);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeleteGroupWhenNoSuchGroup() {
+        ModelManager.getModel().deleteGroup(new Group("red group", GroupColor.RED));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDeleteNullGroup() {
+        ModelManager.getModel().deleteGroup(null);
+    }
+
     private Model createModelWithoutPerson1() {
         Model model = ModelManager.getModel();
-        model.setGroupSet(new HashSet<Group>(){{
-            add(BLUE_GROUP);
-            add(YELLOW_GROUP);
-        }});
-        model.setPersons(new HashSet<Person>(){{
-            add(PERSON_2);
-            add(PERSON_3);
-        }});
+        model.getGroups().addAll(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
+        model.getPersons().addAll(Arrays.asList(PERSON_2, PERSON_3));
         return model;
     }
 
@@ -100,14 +106,8 @@ public class ModelTest {
         deleteGroupFromPerson(BLUE_GROUP, PERSON_1);
         deleteGroupFromPerson(BLUE_GROUP, PERSON_2);
         Model model = ModelManager.getModel();
-        model.setGroupSet(new HashSet<Group>(){{
-            add(YELLOW_GROUP);
-        }});
-        model.setPersons(new HashSet<Person>(){{
-            add(PERSON_1);
-            add(PERSON_2);
-            add(PERSON_3);
-        }});
+        model.getGroups().add(YELLOW_GROUP);
+        model.getPersons().addAll(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
         return model;
     }
 
