@@ -22,10 +22,16 @@ public class Person {
 
     private boolean isSingle;
 
-    public Person(@Nonnull String name, boolean isSingle) {
+
+    //1 - man, 0 - woman
+    private Sex sex;
+
+    public Person(@Nonnull String name, boolean isSingle, @Nonnull Sex sex) {
         Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(sex);
         this.name = name;
         this.isSingle = isSingle;
+        this.sex = sex;
         groupSet = new HashSet<>();
         relations = new HashMap<>();
     }
@@ -38,6 +44,16 @@ public class Person {
     public void setName(@Nonnull String name) {
         Preconditions.checkNotNull(name);
         this.name = name;
+    }
+
+    @Nonnull
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(@Nonnull Sex sex) {
+        Preconditions.checkNotNull(sex);
+        this.sex = sex;
     }
 
     @Nonnull

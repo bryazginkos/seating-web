@@ -28,9 +28,9 @@ public class ModelTest {
         Model model = ModelManager.getModel();
         model.addGroups(Arrays.asList(BLUE_GROUP, YELLOW_GROUP));
 
-        PERSON_1 = new Person("Person #1", true);
-        PERSON_2 = new Person("Person #2", true);
-        PERSON_3 = new Person("Person #3", false);
+        PERSON_1 = new Person("Person #1", true, Sex.FEMALE);
+        PERSON_2 = new Person("Person #2", true, Sex.MALE);
+        PERSON_3 = new Person("Person #3", false,  Sex.FEMALE);
         model.addPersons(Arrays.asList(PERSON_1, PERSON_2, PERSON_3));
 
         PERSON_1.addGroup(BLUE_GROUP);
@@ -47,7 +47,7 @@ public class ModelTest {
 
     @Test(expected = BusinessException.class)
     public void testDeletePersonWhenNoSuchPerson() throws BusinessException {
-        ModelManager.getModel().deletePerson(new Person("Peter", false));
+        ModelManager.getModel().deletePerson(new Person("Peter", false, Sex.FEMALE));
     }
 
     @Test(expected = NullPointerException.class)

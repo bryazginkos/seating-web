@@ -38,9 +38,9 @@ public class PersonsPagePresenterTest {
         model = spy(new Model());
         ModelManager.putMockModel(model);
 
-        PERSON_1 = new Person("Person #1", true);
-        PERSON_2 = new Person("Person #2", true);
-        PERSON_3 = new Person("Person #3", false);
+        PERSON_1 = new Person("Person #1", true, Sex.FEMALE);
+        PERSON_2 = new Person("Person #2", true, Sex.MALE);
+        PERSON_3 = new Person("Person #3", false, Sex.FEMALE);
 
         HashSet<Group> groupHashSet = new HashSet<Group>() {{
             add(BLUE_GROUP);

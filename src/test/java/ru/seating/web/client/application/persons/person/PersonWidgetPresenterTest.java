@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import ru.seating.web.client.application.persons.DeletePersonEvent;
 import ru.seating.web.client.model.Person;
+import ru.seating.web.client.model.Sex;
 import ru.seating.web.client.utils.ExpectedEvent;
 
 import static org.mockito.Mockito.*;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.*;
 @RunWith(JukitoRunner.class)
 public class PersonWidgetPresenterTest {
 
-    private static final Person PERSON = new Person("Kostya", false);
+    private static final Person PERSON = new Person("Kostya", false, Sex.FEMALE);
 
     @Inject
     private PersonPresenter personPresenter;
