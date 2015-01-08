@@ -43,4 +43,21 @@ public class DeletePersonEvent extends GwtEvent<DeletePersonEvent.DeletePersonHa
     public Person getPerson() {
         return person;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof DeletePersonEvent)) return false;
+
+        DeletePersonEvent that = (DeletePersonEvent) o;
+
+        if (!person.equals(that.person)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return person.hashCode();
+    }
 }
