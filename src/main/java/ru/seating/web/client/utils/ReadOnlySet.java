@@ -3,7 +3,6 @@ package ru.seating.web.client.utils;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
