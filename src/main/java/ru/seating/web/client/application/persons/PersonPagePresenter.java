@@ -163,6 +163,7 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
         super.onBind();
         getEventBus().addHandler(DeletePersonEvent.getType(), this);
         getEventBus().addHandler(DeleteGroupEvent.getType(), this);
+        getEventBus().addHandler(EditPersonEvent.getType(), this);
     }
 
     @Override
