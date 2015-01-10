@@ -8,6 +8,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import ru.seating.web.client.application.persons.DeleteGroupEvent;
+import ru.seating.web.client.application.persons.editgroup.EditGroupPresenter;
 import ru.seating.web.client.model.Group;
 
 import javax.annotation.Nonnull;
@@ -20,6 +21,9 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView> imple
     private Group group;
 
     private EventBus eventBus;
+
+    @Inject
+    private EditGroupPresenter editGroupPresenter;
 
     @Inject
     GroupPresenter(EventBus eventBus, MyView view) {
@@ -37,7 +41,8 @@ public class GroupPresenter extends PresenterWidget<GroupPresenter.MyView> imple
 
     @Override
     public void openEditWindow() {
-
+        editGroupPresenter.initForEdit(group);
+        addToPopupSlot(editGroupPresenter);
     }
 
     public void showGroup(@Nonnull Group group) {

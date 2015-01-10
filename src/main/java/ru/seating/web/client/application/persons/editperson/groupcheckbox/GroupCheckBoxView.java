@@ -58,6 +58,7 @@ class GroupCheckBoxView extends ViewImpl implements GroupCheckBoxPresenter.MyVie
         for (Group group : groups) {
             CheckBoxWidget checkBoxWidget = new CheckBoxWidget();
             checkBoxWidget.setGroup(group);
+            checkBoxWidgets.add(checkBoxWidget);
             checkBoxPanel.add(checkBoxWidget);
         }
     }

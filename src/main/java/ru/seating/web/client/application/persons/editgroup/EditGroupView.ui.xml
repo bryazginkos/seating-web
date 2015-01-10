@@ -1,0 +1,13 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <g:PopupPanel autoHideOnHistoryEventsEnabled="false" autoHideEnabled="false" modal="true" glassEnabled="true">
+        <g:HTMLPanel>
+            Group Name: <g:TextBox ui:field="groupNameTextBox"/> <br/>
+            Color : <g:ValueListBox ui:field="colorBox"/>
+            <g:Image ui:field="colorIcon"/><br/>
+            <g:Button ui:field="okButton" text="OK"/> <br/>
+            <g:Image ui:field="closeIcon" url="images/close.png"/>
+        </g:HTMLPanel>
+    </g:PopupPanel>
+</ui:UiBinder>

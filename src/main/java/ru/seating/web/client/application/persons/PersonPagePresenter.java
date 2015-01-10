@@ -16,25 +16,24 @@ import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import ru.seating.web.client.application.ApplicationPresenter;
 import ru.seating.web.client.application.messagebox.MessageBoxPresenter;
+import ru.seating.web.client.application.persons.editgroup.EditGroupPresenter;
 import ru.seating.web.client.application.persons.editperson.EditPersonPresenter;
 import ru.seating.web.client.application.persons.group.GroupPresenter;
 import ru.seating.web.client.application.persons.person.PersonPresenter;
 import ru.seating.web.client.exception.BusinessException;
-import ru.seating.web.client.model.Group;
-import ru.seating.web.client.model.Model;
-import ru.seating.web.client.model.ModelManager;
-import ru.seating.web.client.model.Person;
+import ru.seating.web.client.model.*;
 import ru.seating.web.client.place.NameTokens;
 import ru.seating.web.client.utils.ServiceCallback;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
+import java.util.Collection;
 
 /**
  * Created by Константин on 02.01.2015.
  */
 public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, PersonPagePresenter.MyProxy>
-        implements PersonPageUIHandlers, DeletePersonEvent.DeletePersonHandler, DeleteGroupEvent.DeleteGroupHandler, EditPersonEvent.EditPersonHandler {
+        implements PersonPageUIHandlers, DeletePersonEvent.DeletePersonHandler, DeleteGroupEvent.DeleteGroupHandler, EditPersonEvent.EditPersonHandler, EditGroupEvent.EditGroupHandler {
     public interface MyView extends View, HasUiHandlers<PersonPageUIHandlers> {
     }
 
@@ -60,6 +59,9 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
     private EditPersonPresenter editPersonPresenter;
 
     @Inject
+    private EditGroupPresenter editGroupPresenter;
+
+    @Inject
     PersonPagePresenter(EventBus eventBus,
                          MyView view,
                          MyProxy proxy,
@@ -78,7 +80,14 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @Override
     public void onAddGroupClick() {
-        //todo
+        Collection<GroupColor> freeColors = ModelUtils.getFreeColors();
+        if (!freeColors.isEmpty()) {
+            editGroupPresenter.initForCreating();
+            addToPopupSlot(editGroupPresenter);
+        } else {
+            messageBoxPresenter.configure("Can't create one more group");
+            addToPopupSlot(messageBoxPresenter);
+        }
     }
 
     @Override
@@ -106,6 +115,11 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
 
     @Override
     public void onEditPerson(EditPersonEvent EditPersonEvent) {
+        configureByModel();
+    }
+
+    @Override
+    public void onEditGroup(EditGroupEvent EditGroupEvent) {
         configureByModel();
     }
 
@@ -164,6 +178,7 @@ public class PersonPagePresenter extends Presenter<PersonPagePresenter.MyView, P
         getEventBus().addHandler(DeletePersonEvent.getType(), this);
         getEventBus().addHandler(DeleteGroupEvent.getType(), this);
         getEventBus().addHandler(EditPersonEvent.getType(), this);
+        getEventBus().addHandler(EditGroupEvent.getType(), this);
     }
 
     @Override

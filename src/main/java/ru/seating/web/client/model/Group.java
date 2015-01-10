@@ -29,4 +29,14 @@ public class Group {
     public GroupColor getColor() {
         return color;
     }
+
+    public void setTitle(@Nonnull String title) {
+        Preconditions.checkNotNull(title);
+        this.title = title;
+    }
+
+    public void setColor(@Nonnull GroupColor color) {
+        Preconditions.checkNotNull(color);
+        this.color = color;
+    }
 }
