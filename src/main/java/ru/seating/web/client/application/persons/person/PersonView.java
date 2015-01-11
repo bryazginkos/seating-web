@@ -59,6 +59,8 @@ class PersonView extends ViewWithUiHandlers<PersonUiHandlers> implements PersonP
         Preconditions.checkNotNull(group);
         Image image = new Image();
         image.setUrl(PATH + group.getColor().getFilename());
+        //todo do not set style here
+        image.setStyleName("groupIcon");
         groupImages.add(image);
     }
 

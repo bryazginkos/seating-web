@@ -2,6 +2,6 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <g:HTMLPanel>
         <g:CheckBox ui:field="checkBox"/>
-        <g:Image ui:field="colorIcon"/>
+        <g:Image ui:field="colorIcon" styleName="groupIcon"/>
     </g:HTMLPanel>
 </ui:UiBinder>

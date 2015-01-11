@@ -2,21 +2,9 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
     <ui:style>
     </ui:style>
-    <g:HTMLPanel>
-        <table border="1">
-            <tr>
-                <td colspan="2">
+    <g:HTMLPanel styleName="person">
+                    <g:Image ui:field="closeIcon" url="images\close.png" styleName="closeIcon"/>
                     <g:Label ui:field="nameLabel"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <g:HTMLPanel ui:field="groupImages"/>
-                </td>
-                <td>
-                    <g:Image ui:field="closeIcon" url="images\close.png"/>
-                </td>
-            </tr>
-        </table>
     </g:HTMLPanel>
 </ui:UiBinder>

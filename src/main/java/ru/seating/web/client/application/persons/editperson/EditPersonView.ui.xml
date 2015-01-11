@@ -3,12 +3,14 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <g:PopupPanel autoHideOnHistoryEventsEnabled="false" autoHideEnabled="false" modal="true" glassEnabled="true">
         <g:HTMLPanel>
+            <g:HorizontalPanel styleName="rigthtAlign">
+                <g:Image ui:field="closeIcon" url="images/close.png" styleName="closeIcon"/>
+            </g:HorizontalPanel>
             Name : <g:TextBox ui:field="nameTextBox"/><br/>
             Groups: <g:HTMLPanel ui:field="groupsArea"/><br/>
             Sex: <g:RadioButton name="sexRadio" ui:field="sexM">M</g:RadioButton>
             <g:RadioButton name="sexRadio" ui:field="sexF">F</g:RadioButton>
             <g:CheckBox ui:field="singleCheckBox" text="Single"></g:CheckBox><br/>
-            <g:Image ui:field="closeIcon" url="images/close.png"/><br/>
             <g:Button text="Add" ui:field="addButton"/>
         </g:HTMLPanel>
     </g:PopupPanel>

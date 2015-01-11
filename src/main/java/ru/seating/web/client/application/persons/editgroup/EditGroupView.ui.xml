@@ -3,11 +3,16 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <g:PopupPanel autoHideOnHistoryEventsEnabled="false" autoHideEnabled="false" modal="true" glassEnabled="true">
         <g:HTMLPanel>
+            <g:HTMLPanel styleName="rigthtAlign">
+                <g:Image ui:field="closeIcon" url="images/close.png" styleName="closeIcon"/>
+            </g:HTMLPanel>
             Group Name: <g:TextBox ui:field="groupNameTextBox"/> <br/>
-            Color : <g:ValueListBox ui:field="colorBox"/>
-            <g:Image ui:field="colorIcon"/><br/>
+            <g:HorizontalPanel>
+                <g:Label text="Color: "/>
+                <g:ValueListBox ui:field="colorBox"/>
+                <g:Image ui:field="colorIcon" styleName="groupIcon"/>
+            </g:HorizontalPanel>
             <g:Button ui:field="okButton" text="OK"/> <br/>
-            <g:Image ui:field="closeIcon" url="images/close.png"/>
         </g:HTMLPanel>
     </g:PopupPanel>
 </ui:UiBinder>
