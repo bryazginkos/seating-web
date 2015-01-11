@@ -112,6 +112,7 @@ class EditGroupView extends PopupViewWithUiHandlers<EditGroupUiHandlers> impleme
     public void setColor(@Nonnull GroupColor color) {
         Preconditions.checkNotNull(color);
         colorBox.setValue(color);
+        getUiHandlers().onChangeGroupColor(color);
     }
 
     @Override
